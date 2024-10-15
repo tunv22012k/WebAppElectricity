@@ -1,0 +1,82 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "Đăng nhập";
+}
+
+<link rel="stylesheet" href="~/Css/page-login.css" />
+
+<style>
+    body {
+        display: grid;
+    }
+    .validation-summary-errors ul {
+        list-style-type: none;
+        padding-left: 0;
+        margin-left: 0;
+    }
+    input[type="password"]::-ms-reveal,
+    input[type="password"]::-ms-clear {
+        display: none;
+    }
+
+    input[type="password"]::-webkit-credentials-auto-fill-button {
+        display: none;
+    }
+</style>
+
+<!-- Login Form (To hơn) -->
+<div class="login-container">
+    <h5 class="text-center">Đăng nhập</h5>
+    <form method="POST" action="/User/Login">
+        @Html.AntiForgeryToken()
+
+        <!-- Hiển thị thông báo lỗi chung -->
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+        <div class="form-group">
+            <label for="UserName padding_bottom">Tên đăng nhập</label>
+            <input type="text" class="form-control padding_bottom" id="UserName" name="UserName" placeholder="Tên đăng nhập">
+        </div>
+        <div class="form-group password-container margin_top_form">
+            <label for="Password" class="padding_bottom">Mật khẩu</label>
+            <div class="div_input_pass">
+                <input type="password" class="form-control padding_bottom" id="Password" name="Password" placeholder="Mật khẩu">
+                <span class="toggle-password">
+                    <img src="/Content/Images/eye-visible.png" alt="Toggle Password" id="togglePassword">
+                </span>
+            </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-block margin_top_form btn_login">Đăng nhập</button>
+    </form>
+</div>
+
+<!-- Thêm các script khác ở đây -->
+@section scripts {
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("form").validate({
+                rules: {
+                    UserName: {
+                        required: true
+                    },
+                    Password: {
+                        required: true
+                    }
+                }
+            });
+
+            $('#togglePassword').on('click', function () {
+                const passwordField = $('#Password');
+                const passwordFieldType = passwordField.attr('type');
+                if (passwordFieldType === 'password') {
+                    passwordField.attr('type', 'text');
+                    $('#togglePassword').attr('src', '/Content/Images/eye-invisible.png');
+                } else {
+                    passwordField.attr('type', 'password');
+                    $('#togglePassword').attr('src', '/Content/Images/eye-visible.png');
+                }
+            });
+        });
+    </script>
+}

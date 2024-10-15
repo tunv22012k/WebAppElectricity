@@ -120,11 +120,20 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\DatabaseHelper.cs" />
+    <Compile Include="Helpers\Constants.cs" />
+    <Compile Include="Helpers\InfoUserLogin.cs" />
+    <Compile Include="Models\FileUpload.cs" />
+    <Compile Include="Models\Category.cs" />
+    <Compile Include="Models\FileData.cs" />
+    <Compile Include="Models\Users.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\UserService.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap-grid.css" />
@@ -143,9 +152,16 @@
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\bootstrap.rtl.css" />
     <Content Include="Content\bootstrap.rtl.min.css" />
+    <Content Include="Content\Images\banner.jpg" />
+    <Content Include="Content\Images\eye-invisible.png" />
+    <Content Include="Content\Images\eye-visible.png" />
+    <Content Include="Css\page-login.css" />
+    <Content Include="Css\form-layout.css" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="ScriptsValidate\validation-message.js" />
+    <Content Include="ScriptsValidate\validation-config.js" />
     <Content Include="Scripts\bootstrap.bundle.js" />
     <Content Include="Scripts\bootstrap.bundle.min.js" />
     <Content Include="Scripts\bootstrap.esm.js" />
@@ -174,13 +190,11 @@
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
-    <Content Include="Views\Home\About.cshtml" />
-    <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\User\Login.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap.rtl.min.css.map" />
