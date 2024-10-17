@@ -24,7 +24,8 @@ namespace WebAppElectricity
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.min.css",
-                      "~/Content/bootstrap.css"));
+                      "~/Content/bootstrap.css",
+                      "~/Content/bootstrap-treeview.min.css"));
         }
     }
 }

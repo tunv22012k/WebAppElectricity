@@ -51,7 +51,7 @@ namespace WebAppElectricity.Controllers
                 // set info user login
                 Session["UserLogin"] = userLogin;
 
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("Index", "File");
             }
 
             ModelState.AddModelError("", "Tên đăng nhập hoặc mật khẩu không chính xác.");

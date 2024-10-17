@@ -1,0 +1,505 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "Hồ sơ";
+    var userLogin = WebAppElectricity.Helpers.InfoUserLogin.GetLoggedInUserInfo();
+}
+
+<style>
+    /* Treeview style */
+    .treeview {
+        max-height: 400px;
+        overflow-y: auto;
+        border: 1px solid #ddd;
+        padding: 10px;
+        font-size: 12px;
+    }
+
+    /*.list-group-item {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: block;
+        width: 100%;
+    }*/
+
+    .file-view-area {
+        border: 1px solid #000;
+        height: 300px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: 10px;
+        color: #888;
+    }
+
+    .btn-group-area {
+        margin-top: 15px;
+    }
+
+    /* Tab content padding */
+    .tab-content {
+        margin-top: 20px;
+    }
+
+    .display_space_evenly {
+        justify-content: space-evenly;
+    }
+
+    .div_form_check {
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        padding: 5px;
+        max-height: 90px;
+        height: 90px;
+        overflow: auto;
+    }
+
+    .form_search {
+        display: flex;
+    }
+
+    .btnSearch {
+        width: 125px;
+        margin-left: 5px;
+    }
+
+    .modal-dialog-create-category {
+        top: 20%;
+    }
+
+    .label-create-category {
+        font-weight: 500;
+    }
+</style>
+
+<div class="form_file">
+    <!-- Tabs -->
+    <ul class="nav nav-tabs" id="myTab" role="tablist">
+        <li class="nav-item">
+            <a class="nav-link active" id="tab1-tab" data-toggle="tab" href="#tab1" role="tab" aria-controls="tab1" aria-selected="true">Tab1</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="tab2-tab" data-toggle="tab" href="#tab2" role="tab" aria-controls="tab2" aria-selected="false">Tab2</a>
+        </li>
+    </ul>
+
+    <!-- Tab content -->
+    <div class="tab-content" id="myTabContent">
+        <!-- Tab1 Content -->
+        <div class="tab-pane fade show active" id="tab1" role="tabpanel" aria-labelledby="tab1-tab">
+            <div class="row">
+                <!-- Treeview section on the left -->
+                <div class="col-md-4">
+                    <div class="form-group mb-2">
+                        <button class="btn btn-success btnCreateCategory">Thêm danh mục</button>
+                    </div>
+                    <div class="form-group form_search">
+                        <input type="text" id="searchInput" class="form-control" placeholder="Tìm kiếm...">
+                        <button class="btn btn-primary btnSearch">Tìm kiếm</button>
+                    </div>
+                    <div id="tree" class="mt-2"></div>
+                </div>
+
+                <!-- Content section on the right -->
+                <div class="col-md-8">
+                    Danh mục: xxxxx
+                    <div>
+                        Biên bản khảo sát hiện trường
+                    </div>
+                    <div class="form-group">
+                        <h6>TRẠNG THÁI HỒ SƠ: XÁC NHẬN</h6>
+                        <div class="div_form_check">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="" id="file1">
+                                <label class="form-check-label" for="file1">biên bản khảo sát hiện trường.pdf</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="" id="file2">
+                                <label class="form-check-label" for="file2">phụ lục.pdf</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="" id="file3">
+                                <label class="form-check-label" for="file3">hình ảnh.jpg</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="" id="file4">
+                                <label class="form-check-label" for="file3">cắt giảm.docx</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Khu vực nút chức năng -->
+                    <div class="d-flex justify-content-around mt-2">
+                        <button class="btn btn-primary">Tải lên</button>
+                        <button class="btn btn-success">Tải xuống</button>
+                        <button class="btn btn-danger">Xóa</button>
+                    </div>
+
+                    <!-- Khu vực xem file -->
+                    <div class="file-view-area">
+                        KHU VỰC XEM FILE
+                    </div>
+
+                    <!-- Nút Xác nhận và Từ chối -->
+                    <div class="d-flex display_space_evenly btn-group-area">
+                        <button class="btn btn-primary">Xác nhận</button>
+                        <button class="btn btn-danger">Từ chối</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab2 Content -->
+        <div class="tab-pane fade" id="tab2" role="tabpanel" aria-labelledby="tab2-tab">
+            <div class="row">
+                <div class="col-md-12">
+                    Nội dung cho Tab2.
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal create category -->
+<div class="modal fade"
+     id="modalCreateCategory"
+     tabindex="-1"
+     role="dialog"
+     aria-labelledby="modalLabelCreateCategory"
+     aria-hidden="true">
+    <div class="modal-dialog modal-dialog-create-category">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalLabelCreateCategory">Thêm danh mục</h5>
+                <button type="button" class="btn-close btn-modal-close" data-coreui-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="CategoryName" class="label-create-category">Tên danh mục:</label>
+                    <input type="text" class="form-control padding_bottom" id="CategoryName" name="CategoryName" placeholder="">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary btn-modal-close" data-coreui-dismiss="modal">Đóng</button>
+                <button type="button" class="btn btn-primary btn-modal-create-category">Thêm mới</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Thêm các script khác ở đây -->
+@section scripts {
+    <script type="text/javascript">
+        $(document).ready(function () {
+            // get data server
+            let listCategory = @Html.Raw(Json.Encode(ViewBag.listCategory));
+
+            // set data default
+            var treeData = [];
+
+            // info modal
+            var modalCreateCategory = new bootstrap.Modal(document.getElementById("modalCreateCategory"), {});
+
+            // btn close modal
+            $(document).on("click", ".btn-modal-close", function () {
+                modalCreateCategory.hide();
+            });
+
+            // function create category
+            $(document).on("click", ".btnCreateCategory", function () {
+                modalCreateCategory.show();
+            });
+
+            // btn create category modal
+            $(document).on("click", ".btn-modal-create-category", function () {
+                let CategoryName = $('input[name="CategoryName"]').val();
+
+                // check data input
+                if (CategoryName == '') {
+                    alert("Tên danh mục không thể để trống!");
+                    return;
+                }
+                if (CategoryName.length > 255) {
+                    alert("Tên danh mục không thể vượt quá 255 kí tự!");
+                    return;
+                }
+
+                // call ajax
+                $.ajax({
+                    url: '@Url.Action("CreateCategory", "File")',
+                    type: 'POST',
+                    data: {
+                        UserId      : '@userLogin.UserId',
+                        CategoryName: CategoryName
+                    },
+                    success: function (response) {
+                        if (response.success) {
+                            alert("Thêm mới danh mục thành công!");
+                            location.reload();
+                        } else {
+                            alert("Xóa danh mục thất bại");
+                        }
+                    },
+                    error: function () {
+                        alert("Đã xảy ra lỗi khi thêm danh mục");
+                    }
+                });
+            });
+
+            // load data begin
+            processingDataCategorySetTreeView();
+
+            // processing data and set treeview
+            function processingDataCategorySetTreeView() {
+                for (let i = 0; i < listCategory.length; i++) {
+                    // set data listCategory
+                    let dataListCategory = listCategory[i];
+
+                    // set step disabled select
+                    let stepShow = dataListCategory.StepAccept ? dataListCategory.StepAccept + 1 : 1;
+
+                    // set step deny
+                    let stepDeny = (dataListCategory.StepDeny && dataListCategory.StepDeny != '') ? dataListCategory.StepDeny.split(",") : [];
+
+                    // set data treeview
+                    let dataTreeView = {
+                        text: dataListCategory.CategoryName,
+                        icon: "fas fa-folder",
+                        nodes: [
+                            {
+                                text: "Biên bản khảo sát hiện trường " +
+                                    ((stepShow >= 1 && stepShow != 1)
+                                        ? (stepDeny.findIndex(v => v == 1) >= 0
+                                            ? '<i class="fas fa-times-circle text-danger"></i>'
+                                            : '<i class="fas fa-check-circle text-success"></i>')
+                                        : '')
+                                ,
+                                icon: "fas fa-folder",
+                                nodes: [],
+                                state: {
+                                    disabled: stepShow >=1 ? false : true,
+                                },
+                                step: 1,
+                            },
+                            {
+                                text: "Thống kê chi tiết kế hoạch " + 
+                                    ((stepShow >= 2 && stepShow != 2)
+                                        ? (stepDeny.findIndex(v => v == 2) >= 0
+                                            ? '<i class="fas fa-times-circle text-danger"></i>'
+                                            : '<i class="fas fa-check-circle text-success"></i>')
+                                        : '')
+                                ,
+                                icon: "fas fa-folder",
+                                nodes: [],
+                                state: {
+                                    disabled: stepShow >= 2 ? false : true,
+                                },
+                                step: 2,
+                            },
+                            {
+                                text: "Phương án " + 
+                                    ((stepShow >= 3 && stepShow != 3)
+                                        ? (stepDeny.findIndex(v => v == 3) >= 0
+                                            ? '<i class="fas fa-times-circle text-danger"></i>'
+                                            : '<i class="fas fa-check-circle text-success"></i>')
+                                        : '')
+                                ,
+                                icon: "fas fa-folder",
+                                nodes: [],
+                                state: {
+                                    disabled: stepShow >= 3 ? false : true,
+                                },
+                                step: 3,
+                            },
+                            {
+                                text: "Quyết định phê duyệt " + 
+                                    ((stepShow >= 4 && stepShow != 4)
+                                        ? (stepDeny.findIndex(v => v == 4) >= 0
+                                            ? '<i class="fas fa-times-circle text-danger"></i>'
+                                            : '<i class="fas fa-check-circle text-success"></i>')
+                                        : '')
+                                ,
+                                icon: "fas fa-folder",
+                                nodes: [],
+                                state: {
+                                    disabled: stepShow >= 4 ? false : true,
+                                },
+                                step: 4,
+                            },
+                            {
+                                text: "Phê duyệt kế hoạch thực hiện " + 
+                                    ((stepShow >= 5 && stepShow != 5)
+                                        ? (stepDeny.findIndex(v => v == 5) >= 0
+                                            ? '<i class="fas fa-times-circle text-danger"></i>'
+                                            : '<i class="fas fa-check-circle text-success"></i>')
+                                        : '')
+                                    ,
+                                icon: "fas fa-folder",
+                                nodes: [],
+                                state: {
+                                    disabled: stepShow >= 5 ? false : true,
+                                },
+                                step: 5,
+                            },
+                            {
+                                text: "Biên bản kiểm tra hiện trường " + 
+                                    ((stepShow >= 6 && stepShow != 6)
+                                        ? (stepDeny.findIndex(v => v == 6) >= 0
+                                            ? '<i class="fas fa-times-circle text-danger"></i>'
+                                            : '<i class="fas fa-check-circle text-success"></i>')
+                                        : '')
+                                ,
+                                icon: "fas fa-folder",
+                                nodes: [],
+                                state: {
+                                    disabled: stepShow >= 6 ? false : true,
+                                },
+                                step: 6,
+                            },
+                            {
+                                text: "Tờ trình phê duyệt kinh phí " + 
+                                    ((stepShow >= 7 && stepShow != 7)
+                                        ? (stepDeny.findIndex(v => v == 7) >= 0
+                                            ? '<i class="fas fa-times-circle text-danger"></i>'
+                                            : '<i class="fas fa-check-circle text-success"></i>')
+                                        : '')
+                                ,
+                                icon: "fas fa-folder",
+                                nodes: [],
+                                state: {
+                                    disabled: stepShow >= 7 ? false : true,
+                                },
+                                step: 7,
+                            },
+                            {
+                                text: "Hồ sơ chi tiết đền bù " + 
+                                    ((stepShow >= 8 && stepShow != 8)
+                                        ? (stepDeny.findIndex(v => v == 8) >= 0
+                                            ? '<i class="fas fa-times-circle text-danger"></i>'
+                                            : '<i class="fas fa-check-circle text-success"></i>')
+                                        : '')
+                                ,
+                                icon: "fas fa-folder",
+                                nodes: [],
+                                state: {
+                                    disabled: stepShow >= 8 ? false : true,
+                                },
+                                step: 8,
+                            },
+                            {
+                                text: "Biên bản giải tỏa cây cao ngoài hành lang " + 
+                                    ((stepShow >= 9 && stepShow != 9)
+                                        ? (stepDeny.findIndex(v => v == 9) >= 0
+                                            ? '<i class="fas fa-times-circle text-danger"></i>'
+                                            : '<i class="fas fa-check-circle text-success"></i>')
+                                        : '')
+                                ,
+                                icon: "fas fa-folder",
+                                nodes: [],
+                                state: {
+                                    disabled: stepShow >= 9 ? false : true,
+                                },
+                                step: 9,
+                            },
+                            {
+                                text: "Công tác nghiệm thu " + 
+                                    ((stepShow >= 10 && stepShow != 10)
+                                        ? (stepDeny.findIndex(v => v == 10) >= 0
+                                            ? '<i class="fas fa-times-circle text-danger"></i>'
+                                            : '<i class="fas fa-check-circle text-success"></i>')
+                                        : '')
+                                ,
+                                icon: "fas fa-folder",
+                                nodes: [],
+                                state: {
+                                    disabled: stepShow >= 10 ? false : true,
+                                },
+                                step: 10,
+                            },
+                            {
+                                text: "Biên bản xác nhận khối lượng công việc thực hiện " + 
+                                    ((stepShow >= 11 && stepShow != 11)
+                                        ? (stepDeny.findIndex(v => v == 11) >= 0
+                                            ? '<i class="fas fa-times-circle text-danger"></i>'
+                                            : '<i class="fas fa-check-circle text-success"></i>')
+                                        : '')
+                                ,
+                                icon: "fas fa-folder",
+                                nodes: [],
+                                state: {
+                                    disabled: stepShow >= 11 ? false : true,
+                                },
+                                step: 11,
+                            },
+                        ],
+                    };
+
+                    // push data
+                    treeData.push(dataTreeView);
+                }
+            }
+
+            $('#tree').treeview({
+                data: treeData,         // dữ liệu dạng cây
+                onNodeRendered: function (event, node) {
+                    $('li[data-nodeid="' + node.nodeId + '"]').attr('title', node.text);
+                },
+                expandIcon: 'glyphicon glyphicon-plus',  // biểu tượng mở
+                collapseIcon: 'glyphicon glyphicon-minus',  // biểu tượng đóng
+                nodeIcon: 'glyphicon glyphicon-file',  // biểu tượng node
+                levels: 1  // số cấp độ mở ban đầu (ở đây là 1)
+            });
+
+            $(document).on('click', '.list-group-item', function () {
+                var nodeId = $(this).attr('data-nodeid'); // Lấy ID node được click
+                var node = $('#tree').treeview('getNode', nodeId); // Lấy node tương ứng
+                console.log(node);
+
+                // Nếu node có con (nodes) thì thực hiện đóng/mở
+                if (node.nodes) {
+                    $('#tree').treeview('toggleNodeExpanded', [node.nodeId, { silent: true }]);
+                }
+            });
+
+            // Lắng nghe sự kiện input của ô tìm kiếm
+            $('#searchInput').on('input', function () {
+                var searchText = $(this).val().toLowerCase();  // Lấy giá trị nhập vào và chuyển về chữ thường
+                searchFolders(searchText);  // Gọi hàm tìm kiếm
+            });
+
+            // Hàm tìm kiếm thư mục
+            function searchFolders(searchText) {
+                var $tree = $('#tree');
+
+                if (searchText === "") {
+                    // Hiển thị lại các node phù hợp
+                    $('#tree').treeview({
+                        data: treeData, // Cập nhật dữ liệu hiển thị với kết quả tìm kiếm
+                        expandIcon: 'glyphicon glyphicon-plus',
+                        collapseIcon: 'glyphicon glyphicon-minus',
+                        nodeIcon: 'glyphicon glyphicon-file',
+                        levels: 1
+                    });
+                    return;
+                }
+
+                // Tìm kiếm trong treeData
+                var nodesToShow = [];
+                treeData.forEach(function (node) {
+                    if (node.text.toLowerCase().includes(searchText)) {
+                        nodesToShow.push(node);  // Lưu các node phù hợp vào mảng
+                    }
+                });
+
+                // Hiển thị lại các node phù hợp
+                $('#tree').treeview({
+                    data: nodesToShow, // Cập nhật dữ liệu hiển thị với kết quả tìm kiếm
+                    expandIcon: 'glyphicon glyphicon-plus',
+                    collapseIcon: 'glyphicon glyphicon-minus',
+                    nodeIcon: 'glyphicon glyphicon-file',
+                    levels: 1
+                });
+            }
+        });
+    </script>
+}
